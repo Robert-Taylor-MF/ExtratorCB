@@ -1,0 +1,28 @@
+Python
+
+pycache/
+*.py[cod]
+*.venv
+.env
+
+PyInstaller (Arquivos de build)
+
+build/
+dist/
+*.spec
+
+VS Code / IDEs
+
+.vscode/
+.idea/
+
+Dados Sensíveis e Arquivos de Uso Local
+
+*.pdf
+*.txt
+config_extrator.json
+comprovantes_extraidos/
+
+Logs e Temporários
+
+*.log
