@@ -5,14 +5,20 @@ import os
 import unicodedata
 import re
 
+# --- ATENÇÃO: Este arquivo NÃO deve ter importações de interface (tkinter, ctk) ---
+# Ele é puro processamento de dados.
+
 class ExtratorComprovantes:
     def __init__(self, pdf_path, lista_funcionarios, callback_log=None):
         """
-        :param callback_log: Função para enviar mensagens de texto para a GUI.
+        :param pdf_path: Caminho do PDF
+        :param lista_funcionarios: Lista de dicts com dados
+        :param callback_log: Função para enviar mensagens de volta para a UI (sem importar a UI)
         """
         self.pdf_path = pdf_path
         self.lista_funcionarios = lista_funcionarios
         self.matches = [] 
+        # Se não passar callback, usa print (para testes manuais)
         self.log = callback_log if callback_log else print
 
     def normalizar_texto(self, texto):
@@ -37,7 +43,6 @@ class ExtratorComprovantes:
                 total_paginas = len(pdf.pages)
                 
                 for i, page in enumerate(pdf.pages):
-                    # Atualiza barra de progresso se a função for passada
                     if update_progress:
                         percentual = (i / total_paginas) * 100
                         update_progress(percentual)
@@ -45,12 +50,11 @@ class ExtratorComprovantes:
                     width = page.width
                     height = page.height
                     
-                    # 1. Encontrar Rodapés
+                    # 1. Âncoras
                     txt_rodape = "exceto feriados"
                     ocorrencias_rodape = page.search(txt_rodape)
                     ocorrencias_rodape.sort(key=lambda x: x['top']) 
                     
-                    # 2. Encontrar Cabeçalhos
                     txt_cabecalho = "COMPROVANTE"
                     ocorrencias_cabecalho = page.search(txt_cabecalho)
                     ocorrencias_cabecalho.sort(key=lambda x: x['top'])
